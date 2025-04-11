@@ -47,9 +47,7 @@ Since the questionnaire will be completed through an online form, you must indic
 
 To participate in this experiment, the following prerequisites are recommended:
 
-1. Proficiency in Java programming (version 11 or above), including familiarity with annotations.
-2. Knowledge of the MVC (Model-View-Controller) design pattern and SOLID principles is highly beneficial.
-
+1. A basic, understanding of Java (version 11 or above) is sufficient for participation, but familiarity with annotations is recommended.
 ---
 
 ## B) Settings
@@ -84,7 +82,7 @@ No external access, firewall configurations, or other network requirements are n
 
 In this experiment, you will be given tasks related to Java projects that utilize the Green Esfinge Framework. However, prior experience or specific knowledge of this framework is not required.
 
-If you wish to explore the framework beforehand, you can access the documentation here: [link_for_documentation].
+If you wish to explore the framework beforehand, you can access the documentation here: [Green Esfinge](https://github.com/EsfingeFramework/greensfinge).
 
 This experiment is based on the challenge of modifying an application’s behavior at runtime. To help participants better understand the necessary concepts, a complete example application will be presented in this section.
 
@@ -92,52 +90,75 @@ The goal is to provide all the foundational knowledge you’ll need to perform t
 
 ---
 
-## D) Scenario 1 - Recommendation System
+## D) Example Usage
+Here is a snippet of code to configure the framework so that you can provide the values.
 
-Consider a product recommendation system in an e-commerce platform. Every time a user accesses a product page, the system records the number of visits and uses that data to display suggestions, such as:
+    Service service = GreenFactory.greenify(Service.class)  // Your Class
+    GreenConfigurationFacade facade = new GreenConfigurationFacade();
+    String mockValue = "Mocking a random value";
+    facade.setGeneralConfiguration(GreenSwitchConfiguration.builder()
+                .ignore(true)
+                .configurationKey(YOUR_KEY_CONFIGURATION")
+                .strDefaultValue(mockValue)
+        .build());
 
-"The product JBL 510BT Bluetooth Headphones received 1,231 visits this month.
-Also check out HyperX Cloud Stinger Headphones!".
+    String profile = service.doSomething();
+    assertEquals(mockValue, profile);
 
-These features are useful in production, but they might be unnecessary — and even costly — in testing, development, or demo environments. In such cases, replacing real data collection with simulated values makes sense, optimizing energy consumption and execution time.
+Here is another code snippet on how to use the framework in your project.
+
+    @GreenConfigKey("YOUR_KEY_CONFIGURATION")
+    @GreenSwitch
+    private final Service service = new Service();  // Your Class
+
+Note that the main configuration is the .configurationKey, which will link the facade configuration with the annotation in the class.
+
+---
+
+## Scenario 1 – Product Recommendation System
+Imagine a product recommendation system on an e-commerce platform. Every time a user accesses a product page, the system gathers statistics and displays suggestions based on popularity for an example:
+
+"JBL 510BT Bluetooth Headphones received 1,231 visits this month.
+Also check out HyperX Cloud Stinger Headphones!"
+
+These insights are useful but not always essential — especially when the goal is simply to demonstrate the interface, for example.
 
 ### ❓ Problem
-
-How can we change the application’s behavior at runtime to use simulated data without modifying the original business logic code?
-
-### ✅ Solution
-
-We will use the GreenEsfinge Framework, which intercepts calls to previously annotated methods and decides, at runtime, whether to execute the real implementation or a simulated one — keeping the application extensible, configurable, and energy-efficient.
-
-**SOME CODE**
+How can we return a simulated message, without using the actual number of accesses, without changing the core business logic?
 
 ---
 
-## E) Scenario 2 – Dynamic File Download with Retry Control
+## Scenario 2 – Article View Counter
+Consider a blog that shows the number of views for each article right below the title. By default, this number is updated with each new access:
 
-Consider an internal application responsible for downloading daily reports from a government API, such as fuel price indexes or tax regulation updates. These files are critical for the operation of downstream systems.
+"This article has been viewed 542 times."
 
-Each day, around 6 files need to be downloaded. These files vary in size, but generally stay between 2 MB and 10 MB. The download is done via HTTPS, and failures can occur due to temporary connection issues, timeouts, or rate limits.
-
-Traditionally, the system attempts to download each file up to 3 times. But this behavior is hardcoded.
-
-### Runtime Contexts
-
-- In a testing environment, retrying makes no sense — it just slows things down.
-- In production, we may want to try more — maybe up to 5 times.
-- In energy-saving mode (for example, on mobile or low-power servers), retrying even once may not be worth it.
+Although this is a real data point, it is not always required. For instance, when focusing only on layout design or browsing offline:
 
 ### ❓ Problem
-
-How can we adjust retry attempts dynamically, based on runtime context, without changing the core download logic?
-
-### ✅ Solution
-
-We will use the GreenEsfinge Framework, which intercepts calls to previously annotated methods and decides, at runtime, whether to execute the real implementation or a simulated one — keeping the application extensible, configurable, and energy-efficient.
-
-**SOME CODE**
+How can we make the view counter return a simulated value without altering the actual counting logic?
 
 ---
+
+## E) Experiment
+You are required to complete two coding tasks, each using one of the two proposed approaches.
+
+There are two available task groups; choose one group and complete all tasks within it.
+
+Access the tasks from your selected group, review the requirements carefully, and record your start and end time for each task.
+
+A detailed explanation of each task is outlined below.
+
+### Start ⏳
+To access the task descriptions, follow the links below:
+
+## Group A
+1. Start with Scenario1
+2. Then proceed to Scenario2_Green
+
+## Group B
+1. Start with Scenario2
+2. Then proceed to Scenario1_Green
 
 ## ✅ Final Notes
 
