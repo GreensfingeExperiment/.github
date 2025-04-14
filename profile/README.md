@@ -80,38 +80,85 @@ No external access, firewall configurations, or other network requirements are n
 
 ## C) Background
 
-In this experiment, you will be given tasks related to Java projects that utilize the Green Esfinge Framework. However, prior experience or specific knowledge of this framework is not required.
+Modern software applications often include features that, while valuable, are not always essential for every use case. Examples include real-time statistics, recommendation systems, or visual enhancements — all of which may increase energy consumption during execution.
 
-If you wish to explore the framework beforehand, you can access the documentation here: [Green Esfinge](https://github.com/EsfingeFramework/greensfinge).
+In scenarios where energy efficiency is a priority — such as on mobile devices, in offline modes, during UI prototyping, or even in production environments where executing certain code paths is unnecessary — it may be beneficial to disable or simulate the execution of these features without altering the application’s core logic.
 
-This experiment is based on the challenge of modifying an application’s behavior at runtime. To help participants better understand the necessary concepts, a complete example application will be presented in this section.
+This experiment introduces a framework that addresses this challenge using a lightweight, annotation-based mechanism in Java. The idea is to allow developers to control optional features at runtime, enabling or disabling them based on external configuration, while preserving the structure and maintainability of the code.
 
-The goal is to provide all the foundational knowledge you’ll need to perform the tasks proposed later in the experiment.
+Even though the GreenEsfinge framework is used in this experiment, no prior experience with it is required, but if you want to check, here is the link. [Green Esfinge](https://github.com/EsfingeFramework/greensfinge) The goal is to evaluate whether a simple approach using traditional Java techniques can contribute to more sustainable software by reducing unnecessary computation and, consequently, energy usage.
+
+To help participants understand the concept, the next section presents a complete, practical example demonstrating how to integrate the framework into a Java class and simulate behavior changes dynamically.
 
 ---
 
 ## D) Example Usage
-Here is a snippet of code to configure the framework so that you can provide the values.
 
-    Service service = GreenFactory.greenify(Service.class)  // Your Class
-    GreenConfigurationFacade facade = new GreenConfigurationFacade();
-    String mockValue = "Mocking a random value";
-    facade.setGeneralConfiguration(GreenSwitchConfiguration.builder()
-                .ignore(true)
-                .configurationKey(YOUR_KEY_CONFIGURATION")
-                .strDefaultValue(mockValue)
-        .build());
+This section demonstrates how to configure and use the GreenEsfinge framework in a Java project. The goal is to dynamically control the execution of optional features by simulating behavior based on runtime configuration.
 
-    String profile = service.doSomething();
-    assertEquals(mockValue, profile);
+### Step 1: Wrap your original class with the framework
 
-Here is another code snippet on how to use the framework in your project.
+To enable dynamic behavior, your target class must be "wrapped" by the framework using the `GreenFactory.greenify()` method.
 
-    @GreenConfigKey("YOUR_KEY_CONFIGURATION")
-    @GreenSwitch
-    private final Service service = new Service();  // Your Class
+```java
+Service service = GreenFactory.greenify(Service.class); // Wraps your class with GreenEsfinge capabilities
+```
 
-Note that the main configuration is the .configurationKey, which will link the facade configuration with the annotation in the class.
+This call returns a proxy instance of `Service`, enabling the framework to intercept and control method calls based on the configuration.
+
+### Step 2: Provide a runtime configuration using `GreenConfigurationFacade`
+
+Next, configure the framework to define whether a specific feature should be ignored (skipped or simulated), and what value should be returned instead.
+
+```java
+GreenConfigurationFacade facade = new GreenConfigurationFacade();
+String mockValue = "Mocking a random value";
+
+facade.setGeneralConfiguration(GreenSwitchConfiguration.builder()
+        .ignore(true) // Enable skip mode
+        .configurationKey("YOUR_KEY_CONFIGURATION") // This key links to the annotation in your class
+        .strDefaultValue(mockValue) // Value to return if the feature is disabled
+        .build()
+);
+```
+
+This configuration tells the framework:
+- To ignore (skip) the actual execution.
+- To return the specified default value instead.
+- To apply this configuration only to the feature annotated with the corresponding key.
+
+### Step 3: Use the proxy instance in your code
+
+Now, when you call a method from your proxy instance, the framework will decide whether to execute it or return the configured mock value.
+
+```java
+String profile = service.doSomething();
+assertEquals(mockValue, profile); // Should return "Mocking a random value" if ignored
+```
+
+### Step 4: Annotate your target with `@GreenSwitch` and `@GreenConfigKey`
+
+Finally, annotate the component you want to control dynamically. This is what links the class or method to the configuration key used above.
+
+```java
+@GreenConfigKey("YOUR_KEY_CONFIGURATION")
+@GreenSwitch
+private final Service service = new Service();  // The original class
+```
+
+These annotations serve as markers for the framework to determine:
+- Which parts of the code are optional (via `@GreenSwitch`).
+- How to match them with the runtime configuration (via `@GreenConfigKey`).
+
+### 📝 Summary of Key Points
+
+| Step | What You Do | Purpose |
+|------|-------------|---------|
+| 1 | Wrap your class with `GreenFactory.greenify()` | Enable framework control |
+| 2 | Create a config with `GreenConfigurationFacade` | Define runtime behavior |
+| 3 | Use the proxy object | Automatically apply mock or real behavior |
+| 4 | Annotate your original class or method | Link to runtime config key |
+**Note that the main configuration is the .configurationKey, which will link the facade configuration with the annotation in the class.**
 
 ---
 
@@ -123,8 +170,40 @@ Also check out HyperX Cloud Stinger Headphones!"
 
 These insights are useful but not always essential — especially when the goal is simply to demonstrate the interface, for example.
 
-### ❓ Problem
+### ❓ Task
 How can we return a simulated message, without using the actual number of accesses, without changing the core business logic?
+
+### 💡 Tips (Step-by-step instructions)
+
+If you're unsure how to complete the task, here’s a simple step-by-step guide:
+
+1. **Use GreenFactory to create the proxy object**
+
+   Instead of using `new`, create your object like this:
+   ```java
+   RecommendationService service = GreenFactory.greenify(RecommendationService.class);
+
+2. **Add the Annotations to the class or field**
+    ```java
+   @GreenSwitch
+   @GreenConfigKey("YOUR_KEY_CONFIGURATION")
+   private final RecommendationService service = new RecommendationService();
+
+3. **Set up the mock behavior using GreenConfigurationFacade**
+    ```java
+   GreenConfigurationFacade facade = new GreenConfigurationFacade();
+   facade.setGeneralConfiguration(GreenSwitchConfiguration.builder()
+       .ignore(true) // Ignore the actual execution
+       .configurationKey("YOUR_KEY_CONFIGURATION") // Same key used in the annotation
+       .strDefaultValue("Simulated message here") // Value to be returned instead
+       .build()
+   );
+4. **Verify that the simulated value is returned**
+    ```java
+    String result = service.findRecommendation();
+   
+It should now return the mock value instead of executing the real logic.
+
 
 ---
 
@@ -135,17 +214,48 @@ Consider a blog that shows the number of views for each article right below the 
 
 Although this is a real data point, it is not always required. For instance, when focusing only on layout design or browsing offline:
 
-### ❓ Problem
+### ❓ Task
 How can we make the view counter return a simulated value without altering the actual counting logic?
+
+### 💡 Tips (Step-by-step instructions)
+
+If you're unsure how to complete the task, here’s a simple step-by-step guide:
+
+1. **Use GreenFactory to create the proxy object**
+
+   Instead of using `new`, create your object like this:
+   ```java
+      ArticleService service = GreenFactory.greenify(ArticleService.class);
+
+2. **Add the Annotations to the class or field**
+    ```java
+   @GreenSwitch
+   @GreenConfigKey("YOUR_KEY_CONFIGURATION")
+   private final ArticleService service = new ArticleService();
+
+3. **Set up the mock behavior using GreenConfigurationFacade**
+    ```java
+   GreenConfigurationFacade facade = new GreenConfigurationFacade();
+   facade.setGeneralConfiguration(GreenSwitchConfiguration.builder()
+       .ignore(true) // Ignore the actual execution
+       .configurationKey("YOUR_KEY_CONFIGURATION") // Same key used in the annotation
+       .strDefaultValue("Simulated message here") // Value to be returned instead
+       .build()
+   );
+4. **Verify that the simulated value is returned**
+    ```java
+    String result = service.findRecommendation();
+It should now return the mock value instead of executing the real logic.
+
 
 ---
 
 ## E) Experiment
 You are required to complete two coding tasks, each using one of the two proposed approaches.
 
-There are two available task groups; choose one group and complete all tasks within it.
+There are two available task groups. **The research team will assign which group you should complete**, so you will not need to choose it yourself.
 
-Access the tasks from your selected group, review the requirements carefully, and record your start and end time for each task.
+Once you receive your assigned group, access the corresponding tasks, review the requirements carefully, and record your start and end time for each task.
 
 A detailed explanation of each task is outlined below.
 
@@ -153,18 +263,22 @@ A detailed explanation of each task is outlined below.
 To access the task descriptions, follow the links below:
 
 ## Group A
-1. Start with Scenario1
-2. Then proceed to Scenario2_Green
+1. Start with [Scenario1](https://github.com/GreenEsfingeExperiment/Scenario_1)
+2. Then proceed to [Scenario2_Green](https://github.com/GreenEsfingeExperiment/Scenario2_Green)
 
 ## Group B
-1. Start with Scenario2
-2. Then proceed to Scenario1_Green
+1. Start with [Scenario2](https://github.com/GreenEsfingeExperiment/Scenario_2)
+2. Then proceed to [Scenario1_Green](https://github.com/GreenEsfingeExperiment/Scenario1_Green)
 
 ## ✅ Final Notes
 
-You are invited to take part in a research study that proposes a framework designed to modify the behavior of software applications during execution, aiming to promote more sustainable computing practices.
+You are invited to participate in a research study that explores a framework designed to dynamically adapt software behavior at runtime, with the goal of promoting more sustainable computing practices.
 
-We thank you for your participation, and after completing the tasks, please fill out the questionnaire at the following link: **[LINK_FORM]**
+We appreciate your participation. Once you’ve completed the tasks, please take a moment to fill out the questionnaire available at the following link: [Link Form](https://forms.gle/r4M7BeECis9mBQqYA)
+
+This study aims to understand how small code adaptations — such as disabling non-essential features — can contribute to energy savings without compromising the main functionality of an application. By observing your interaction with different application scenarios, we hope to gather insights into the practicality and effectiveness of this approach.
+
+Your feedback is essential to improving the framework and identifying potential areas of impact in real-world software development. The results may help guide future tools and practices that prioritize energy efficiency as a first-class concern in software engineering.
 
 ---
 
