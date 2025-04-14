@@ -260,7 +260,7 @@ Once you receive your assigned group, access the corresponding tasks, review the
 
 > ⚠️ **Important:**
 > - If you are performing the experiment using the `Scenario1` and `Scenario2` projects, **you must modify the source code** of the application to implement the required behavior.
-> - If you are working with the `Scenario1_green` and `Scenario2_green` projects, **you must NOT change the application source code**. In these cases, you should rely solely on the configuration mechanisms provided by the GreenEsfinge framework to simulate the behavior.
+> - If you are working with the `Scenario1_Green` and `Scenario2_Green` projects, **you must NOT change the application source code**. In these cases, you should rely solely on the configuration mechanisms provided by the GreenEsfinge framework to simulate the behavior.
 
 
 A detailed explanation of each task is outlined below.
