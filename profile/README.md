@@ -152,12 +152,13 @@ These annotations serve as markers for the framework to determine:
 
 ### 📝 Summary of Key Points
 
-| Step | What You Do | Purpose |
-|------|-------------|---------|
-| 1 | Wrap your class with `GreenFactory.greenify()` | Enable framework control |
-| 2 | Create a config with `GreenConfigurationFacade` | Define runtime behavior |
-| 3 | Use the proxy object | Automatically apply mock or real behavior |
-| 4 | Annotate your original class or method | Link to runtime config key |
+| Step | What You Do                                     | Purpose                                   |
+|------|-------------------------------------------------|-------------------------------------------|
+| 1    | Wrap your class with `GreenFactory.greenify()`  | Enable framework control                  |
+| 2    | Create a config with `GreenConfigurationFacade` | Define runtime behavior                   |
+| 3    | Use the proxy object                            | Automatically apply mock or real behavior |
+| 4    | Annotate your original class or method          | Link to runtime config key                |
+
 **Note that the main configuration is the .configurationKey, which will link the facade configuration with the annotation in the class.**
 
 ---
