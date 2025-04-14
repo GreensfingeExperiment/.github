@@ -205,6 +205,8 @@ If you're unsure how to complete the task, here’s a simple step-by-step guide:
    
 It should now return the mock value instead of executing the real logic.
 
+5. **After that, open the test class and try to make all tests pass.**
+
 
 ---
 
@@ -248,7 +250,7 @@ If you're unsure how to complete the task, here’s a simple step-by-step guide:
     String result = service.findRecommendation();
 It should now return the mock value instead of executing the real logic.
 
-
+5. **After that, open the test class and try to make all tests pass.**
 ---
 
 ## E) Experiment
