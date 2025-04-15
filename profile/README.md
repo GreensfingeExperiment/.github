@@ -1,39 +1,39 @@
 
 # GreenEsfinge Framework Experiment
 
-📝 𝗙𝗥𝗘𝗘 𝗔𝗡𝗗 𝗖𝗟𝗔𝗥𝗜𝗙𝗜𝗘𝗗 𝗖𝗢𝗡𝗦𝗘𝗡𝗧 𝗧𝗘𝗥𝗠 (𝗙𝗖𝗖𝗧)
+📝 FREE AND CLARIFIED CONSENT TERM (FCCT)
 
-You are invited to take part in a research study that proposes a framework designed to modify the behavior of software applications during execution, aiming to promote more sustainable computing practices.
+You are invited to participate in a research study that proposes a framework designed to modify the behavior of software applications during execution, aiming to promote more sustainable computing practices.
 
 ---
 
 ### Participation
 
-This experiment is structured in multiple phases. You will be asked to perform specific tasks using the framework available at: [https://github.com/EsfingeFramework/greensfinge](https://github.com/EsfingeFramework/greensfinge). The detailed instructions for each phase are provided in the following section.
+This experiment is structured in multiple phases. You will be asked to perform specific tasks using the framework available at: [https://github.com/EsfingeFramework/greensfinge](https://github.com/EsfingeFramework/greensfinge). Detailed instructions for each phase are provided in the following section.
 
 ---
 
 ### Confidentiality and Anonymity
 
-All information collected during this research will remain strictly confidential. Any data disclosed in scientific events or publications will be used exclusively for academic purposes and will not include any information that could identify the participant(s), except among the researchers directly involved in the study, thereby ensuring complete privacy regarding your participation.
+All information collected during this research will remain strictly confidential. Any data disclosed at scientific events or in publications will be used exclusively for academic purposes and will not include any information that could identify the participant(s), except among the researchers directly involved in the study, ensuring complete privacy regarding your participation.
 
 ---
 
 ### Contact Information
 
-Throughout the study, you are encouraged to ask questions or request clarifications at any time by reaching out to one of the researchers at the email address: [thiagocarvalhobcc@gmail.com](mailto:thiagocarvalhobcc@gmail.com).
+Throughout the study, you are encouraged to ask questions or request clarifications at any time by contacting one of the researchers at the email address: thiagocarvalhobcc@gmail.com.
 
 ---
 
 ### Voluntary Participation
 
-Participation in this study is entirely voluntary. You are free to decline to participate or to withdraw from the experiment at any point, without any negative consequences or penalties. The experiment may also serve educational purposes within a development context. In such cases, any decision to share your data in support of the research remains fully optional.
+Participation in this study is entirely voluntary. You are free to decline or withdraw from the experiment at any time, without any negative consequences or penalties. The experiment may also serve educational purposes within a development context. In such cases, any decision to share your data in support of the research remains fully optional.
 
 ---
 
 ### Data Retention
 
-All collected data will be securely stored for a period of 5 years after the conclusion of the project.
+All collected data will be securely stored for a period of 2 years after the conclusion of the project.
 
 ---
 
@@ -47,7 +47,8 @@ Since the questionnaire will be completed through an online form, you must indic
 
 To participate in this experiment, the following prerequisites are recommended:
 
-1. A basic, understanding of Java (version 11 or above) is sufficient for participation, but familiarity with annotations is recommended.
+1. A basic understanding of Java (version 11 or above) is sufficient for participation, but familiarity with annotations is recommended.
+
 ---
 
 ## B) Settings
@@ -67,10 +68,12 @@ The experiment has been tested using NetBeans and IntelliJ IDEA on Windows 10, W
 Don’t worry if your IDE or operating system is different — as long as your IDE supports Java development, you are unlikely to experience any issues.
 
 Some IDEs you may use:
-- IntelliJ IDEA
-- NetBeans
-- Eclipse
-- VSCode with Java extensions
+
+ - IntelliJ IDEA   
+ - NetBeans
+ - Eclipse
+ - VSCode with Java extensions
+
 
 ### External Access
 
@@ -86,7 +89,7 @@ In scenarios where energy efficiency is a priority — such as on mobile devices
 
 This experiment introduces a framework that addresses this challenge using a lightweight, annotation-based mechanism in Java. The idea is to allow developers to control optional features at runtime, enabling or disabling them based on external configuration, while preserving the structure and maintainability of the code.
 
-Even though the GreenEsfinge framework is used in this experiment, no prior experience with it is required, but if you want to check, here is the link. [Green Esfinge](https://github.com/EsfingeFramework/greensfinge) The goal is to evaluate whether a simple approach using traditional Java techniques can contribute to more sustainable software by reducing unnecessary computation and, consequently, energy usage.
+Even though the GreenEsfinge framework is used in this experiment, no prior experience with it is required. However, if you want to check, here is the link: Green Esfinge. The goal is to evaluate whether a simple approach using traditional Java techniques can contribute to more sustainable software by reducing unnecessary computation and, consequently, energy usage.
 
 To help participants understand the concept, the next section presents a complete, practical example demonstrating how to integrate the framework into a Java class and simulate behavior changes dynamically.
 
@@ -94,7 +97,7 @@ To help participants understand the concept, the next section presents a complet
 
 ## D) Example Usage: Conventional vs. Green Framework Approach
 
-This section demonstrates how to configure and use the **GreenEsfinge** framework in a Java project, highlighting the difference between the **Conventional Approach** and the **Green Framework Approach**.
+This section demonstrates how to configure and use the GreenEsfinge framework in a Java project, highlighting the difference between the Conventional Approach and the Green Framework Approach.
 
 Below, we present both strategies side by side to highlight how the framework can simplify the implementation and reduce code coupling.
 
@@ -117,6 +120,7 @@ We start with a simple `Controller` class that delegates the logic to a `Service
 ```
 
 ### Step 2: Business Logic with Direct Conditional
+
 In the Service class, we need to change the behavior directly in the business logic, using a conditional check based on an environment variable:
 
 ```java
@@ -138,11 +142,11 @@ In the Service class, we need to change the behavior directly in the business lo
    }
  ```
 
-This approach hardcodes the control logic into the service. In order to simulate or skip part of the functionality, the developer must:
+This approach hardcodes the control logic into the service. To simulate or skip part of the functionality, the developer must:
 
 ### 🧱 After the Framework: Green Framework Approach
 
-To illustrate the benefits of using the Green Framework, let’s compare how a typical feature toggle is implemented using a **Conventional Approach** versus the **Green Framework Approach**.
+To illustrate the benefits of using the Green Framework, let’s compare how a typical feature toggle is implemented using a Conventional Approach versus the Green Framework Approach.
 
 ### Step 1: Wrap your original class with the framework
 
@@ -171,9 +175,10 @@ facade.setGeneralConfiguration(GreenSwitchConfiguration.builder()
 ```
 
 This configuration tells the framework:
-- To ignore (skip) the actual execution.
-- To return the specified default value instead.
-- To apply this configuration only to the feature annotated with the corresponding key.
+
+ - To ignore (skip) the actual execution.
+ - To return the specified default value instead.
+ - To apply this configuration only to the feature annotated with the corresponding key.
 
 ### Step 3: Use the proxy instance in your code
 
