@@ -101,7 +101,7 @@ This section demonstrates how to configure and use the GreenEsfinge framework in
 
 Below, we present both strategies side by side to highlight how the framework can simplify the implementation and reduce code coupling.
 
-### 🧱 Before the Framework: Conventional Approach
+### 🧱 Conventional Approach: How things are done traditionally.
 
 Traditionally, to control optional features like displaying product recommendations, developers need to introduce flags, toggles, or environment variables directly into the application's source code. This can lead to logic being scattered across the codebase, increased complexity in testing, and reduced flexibility.
 
@@ -144,7 +144,7 @@ In the Service class, we need to change the behavior directly in the business lo
 
 This approach hardcodes the control logic into the service. To simulate or skip part of the functionality, the developer must:
 
-### 🧱 After the Framework: Green Framework Approach
+### 🧱 Green Framework Approach: How the same tasks can be performed with the help of GreenEsfinge.
 
 To illustrate the benefits of using the Green Framework, let’s compare how a typical feature toggle is implemented using a Conventional Approach versus the Green Framework Approach.
 
