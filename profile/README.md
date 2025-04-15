@@ -92,9 +92,57 @@ To help participants understand the concept, the next section presents a complet
 
 ---
 
-## D) Example Usage
+## D) Example Usage: Conventional vs. Green Framework Approach
 
-This section demonstrates how to configure and use the GreenEsfinge framework in a Java project. The goal is to dynamically control the execution of optional features by simulating behavior based on runtime configuration.
+This section demonstrates how to configure and use the **GreenEsfinge** framework in a Java project, highlighting the difference between the **Conventional Approach** and the **Green Framework Approach**.
+
+Below, we present both strategies side by side to highlight how the framework can simplify the implementation and reduce code coupling.
+
+### 🧱 Before the Framework: Conventional Approach
+
+Traditionally, to control optional features like displaying product recommendations, developers need to introduce flags, toggles, or environment variables directly into the application's source code. This can lead to logic being scattered across the codebase, increased complexity in testing, and reduced flexibility.
+
+### Step 1: Controller Layer
+
+We start with a simple `Controller` class that delegates the logic to a `Service` class:
+
+   ```java
+   public class Controller {
+      private final Service service = new Service();
+   
+       public String doSomething() {
+           return service.doSomething();
+       }
+   }
+```
+
+### Step 2: Business Logic with Direct Conditional
+In the Service class, we need to change the behavior directly in the business logic, using a conditional check based on an environment variable:
+
+```java
+   public class Service {
+      
+       private final Repository repository = new Repository();
+   
+       public String doSomething() {
+           String product;
+   
+           if (Boolean.parseBoolean(System.getenv("FEATURE.TOGGLE"))) {
+               product = repository.findSomething();
+           } else {
+               product = "Mocked Value";
+           }
+   
+           return product;
+       }
+   }
+ ```
+
+This approach hardcodes the control logic into the service. In order to simulate or skip part of the functionality, the developer must:
+
+### 🧱 After the Framework: Green Framework Approach
+
+To illustrate the benefits of using the Green Framework, let’s compare how a typical feature toggle is implemented using a **Conventional Approach** versus the **Green Framework Approach**.
 
 ### Step 1: Wrap your original class with the framework
 
