@@ -95,58 +95,9 @@ To help participants understand the concept, the next section presents a complet
 
 ---
 
-## D) Example Usage: Conventional vs. Green Framework Approach
+## D) Example Usage
 
-This section demonstrates how to configure and use the GreenEsfinge framework in a Java project, highlighting the difference between the Conventional Approach and the Green Framework Approach.
-
-Below, we present both strategies side by side to highlight how the framework can simplify the implementation and reduce code coupling.
-
-### 🧱 Conventional Approach: How things are done traditionally.
-
-Traditionally, to control optional features like displaying product recommendations, developers need to introduce flags, toggles, or environment variables directly into the application's source code. This can lead to logic being scattered across the codebase, increased complexity in testing, and reduced flexibility.
-
-### Step 1: Controller Layer
-
-We start with a simple `Controller` class that delegates the logic to a `Service` class:
-
-   ```java
-   public class Controller {
-      private final Service service = new Service();
-   
-       public String doSomething() {
-           return service.doSomething();
-       }
-   }
-```
-
-### Step 2: Business Logic with Direct Conditional
-
-In the Service class, we need to change the behavior directly in the business logic, using a conditional check based on an environment variable:
-
-```java
-   public class Service {
-      
-       private final Repository repository = new Repository();
-   
-       public String doSomething() {
-           String product;
-   
-           if (Boolean.parseBoolean(System.getenv("FEATURE.TOGGLE"))) {
-               product = repository.findSomething();
-           } else {
-               product = "Mocked Value";
-           }
-   
-           return product;
-       }
-   }
- ```
-
-This approach hardcodes the control logic into the service. To simulate or skip part of the functionality, the developer must:
-
-### 🧱 Green Framework Approach: How the same tasks can be performed with the help of GreenEsfinge.
-
-To illustrate the benefits of using the Green Framework, let’s compare how a typical feature toggle is implemented using a Conventional Approach versus the Green Framework Approach.
+This section demonstrates how to configure and use the GreenEsfinge framework in a Java project.
 
 ### Step 1: Wrap your original class with the framework
 
@@ -158,49 +109,83 @@ Service service = GreenFactory.greenify(Service.class); // Wraps your class with
 
 This call returns a proxy instance of `Service`, enabling the framework to intercept and control method calls based on the configuration.
 
-### Step 2: Provide a runtime configuration using `GreenConfigurationFacade`
+### Step 2: Annotate your target with `@GreenReturnWhenSwitchOff` and `@GreenConfigKey`
+
+Finally, annotate the component you want to control dynamically. This is what links the class or method to the configuration key used above.
+
+```java
+public class Service { // The original class
+   @GreenConfigKey("YOUR_KEY_CONFIGURATION")
+   @GreenReturnWhenSwitchOff
+   public void doSomething(StringBuilder strParameter) {
+      strParameter.append("something very high");
+   }    
+} 
+```
+
+### Step 3: Provide a runtime configuration using `GreenConfigurationFacade`
 
 Next, configure the framework to define whether a specific feature should be ignored (skipped or simulated), and what value should be returned instead.
 
 ```java
 GreenConfigurationFacade facade = new GreenConfigurationFacade();
-String mockValue = "Mocking a random value";
 
 facade.setGeneralConfiguration(GreenSwitchConfiguration.builder()
         .ignore(true) // Enable skip mode
         .configurationKey("YOUR_KEY_CONFIGURATION") // This key links to the annotation in your class
-        .strDefaultValue(mockValue) // Value to return if the feature is disabled
         .build()
 );
+```
+
+Below a complete code for an example
+
+```java
+
+import net.sf.esfinge.greenframework.configuration.GreenFactory;
+import net.sf.esfinge.greenframework.configuration.facade.GreenConfigurationFacade;
+import net.sf.esfinge.greenframework.dto.annotation.GreenSwitchConfiguration;
+import net.sf.esfinge.greenframework.annotation.GreenConfigKey;
+import net.sf.esfinge.greenframework.annotation.GreenSwitch;
+
+public class UserService {
+
+   @GreenConfigKey("methodConfigKey")
+   @GreenReturnWhenSwitchOff
+   public void doSomethingWithHighConsumeEnergy(StringBuilder strParameter) {
+      strParameter.append("something very high");
+   }
+}
+
+public class Main {
+    
+    public static void main(String[] args) {
+       UserService userService = GreenFactory.greenify(UserService.class);
+       GreenConfigurationFacade facade = new GreenConfigurationFacade();
+
+       facade.setGeneralConfiguration(GreenSwitchConfiguration.builder()
+               .ignore(true)
+               .configurationKey("methodConfigKey")
+               .build()
+       );
+       
+       StringBuilder sbParam = new StringBuilder();
+       sbParam.append("testValue");
+       userService.doSomethingWithHighConsumeEnergy(sbParam);
+       System.out.println(sbParam.toString());
+       //And you'll see the output is only testValue
+    }    
+}
 ```
 
 This configuration tells the framework:
 
  - To ignore (skip) the actual execution.
- - To return the specified default value instead.
  - To apply this configuration only to the feature annotated with the corresponding key.
 
-### Step 3: Use the proxy instance in your code
 
-Now, when you call a method from your proxy instance, the framework will decide whether to execute it or return the configured mock value.
-
-```java
-String profile = service.doSomething();
-assertEquals(mockValue, profile); // Should return "Mocking a random value" if ignored
-```
-
-### Step 4: Annotate your target with `@GreenSwitch` and `@GreenConfigKey`
-
-Finally, annotate the component you want to control dynamically. This is what links the class or method to the configuration key used above.
-
-```java
-@GreenConfigKey("YOUR_KEY_CONFIGURATION")
-@GreenSwitch
-private final Service service = new Service();  // The original class
-```
 
 These annotations serve as markers for the framework to determine:
-- Which parts of the code are optional (via `@GreenSwitch`).
+- Which parts of the code are optional (via `@GreenReturnWhenSwitchOff`).
 - How to match them with the runtime configuration (via `@GreenConfigKey`).
 
 ### 📝 Summary of Key Points
@@ -208,9 +193,9 @@ These annotations serve as markers for the framework to determine:
 | Step | What You Do                                     | Purpose                                   |
 |------|-------------------------------------------------|-------------------------------------------|
 | 1    | Wrap your class with `GreenFactory.greenify()`  | Enable framework control                  |
-| 2    | Create a config with `GreenConfigurationFacade` | Define runtime behavior                   |
-| 3    | Use the proxy object                            | Automatically apply mock or real behavior |
-| 4    | Annotate your original class or method          | Link to runtime config key                |
+| 2    | Annotate your original class or method          | Link to runtime config key                |
+| 3    | Create a config with `GreenConfigurationFacade` | Define runtime behavior                   |
+
 
 **Note that the main configuration is the .configurationKey, which will link the facade configuration with the annotation in the class.**
 
@@ -225,41 +210,7 @@ Also check out HyperX Cloud Stinger Headphones!"
 These insights are useful but not always essential — especially when the goal is simply to demonstrate the interface, for example.
 
 ### ❓ Task
-How can we return a simulated message, without using the actual number of accesses, without changing the core business logic?
-
-### 💡 Tips (Step-by-step instructions)
-
-If you're unsure how to complete the task, here’s a simple step-by-step guide:
-
-1. **Use GreenFactory to create the proxy object**
-
-   Instead of using `new`, create your object like this:
-   ```java
-   RecommendationService service = GreenFactory.greenify(RecommendationService.class);
-
-2. **Add the Annotations to the class or field**
-    ```java
-   @GreenSwitch
-   @GreenConfigKey("YOUR_KEY_CONFIGURATION")
-   private final RecommendationService service = new RecommendationService();
-
-3. **Set up the mock behavior using GreenConfigurationFacade**
-    ```java
-   GreenConfigurationFacade facade = new GreenConfigurationFacade();
-   facade.setGeneralConfiguration(GreenSwitchConfiguration.builder()
-       .ignore(true) // Ignore the actual execution
-       .configurationKey("YOUR_KEY_CONFIGURATION") // Same key used in the annotation
-       .strDefaultValue("Simulated message here") // Value to be returned instead
-       .build()
-   );
-4. **Verify that the simulated value is returned**
-    ```java
-    String result = service.findRecommendation();
-   
-It should now return the mock value instead of executing the real logic.
-
-5. **After that, open the test class and try to make all tests pass.**
-
+How can we ignore the execution without actually invoking business logic method?
 
 ---
 
@@ -271,39 +222,8 @@ Consider a blog that shows the number of views for each article right below the 
 Although this is a real data point, it is not always required. For instance, when focusing only on layout design or browsing offline:
 
 ### ❓ Task
-How can we make the view counter return a simulated value without altering the actual counting logic?
+How can we prevent the view counter from being executed without altering the actual counting logic?
 
-### 💡 Tips (Step-by-step instructions)
-
-If you're unsure how to complete the task, here’s a simple step-by-step guide:
-
-1. **Use GreenFactory to create the proxy object**
-
-   Instead of using `new`, create your object like this:
-   ```java
-      ArticleService service = GreenFactory.greenify(ArticleService.class);
-
-2. **Add the Annotations to the class or field**
-    ```java
-   @GreenSwitch
-   @GreenConfigKey("YOUR_KEY_CONFIGURATION")
-   private final ArticleService service = new ArticleService();
-
-3. **Set up the mock behavior using GreenConfigurationFacade**
-    ```java
-   GreenConfigurationFacade facade = new GreenConfigurationFacade();
-   facade.setGeneralConfiguration(GreenSwitchConfiguration.builder()
-       .ignore(true) // Ignore the actual execution
-       .configurationKey("YOUR_KEY_CONFIGURATION") // Same key used in the annotation
-       .strDefaultValue("Simulated message here") // Value to be returned instead
-       .build()
-   );
-4. **Verify that the simulated value is returned**
-    ```java
-    String result = service.findRecommendation();
-It should now return the mock value instead of executing the real logic.
-
-5. **After that, open the test class and try to make all tests pass.**
 ---
 
 ## E) Experiment
