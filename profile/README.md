@@ -251,6 +251,14 @@ To access the task descriptions, follow the links below:
 1. Start with [Scenario2](https://github.com/GreenEsfingeExperiment/Scenario_2)
 2. Then proceed to [Scenario1_Green](https://github.com/GreenEsfingeExperiment/Scenario1_Green)
 
+## Group C
+1. Start with [Scenario2_Green](https://github.com/GreenEsfingeExperiment/Scenario2_Green)
+2. Then proceed to [Scenario1](https://github.com/GreenEsfingeExperiment/Scenario_1)
+
+## Group D
+1. Start with [Scenario1_Green](https://github.com/GreenEsfingeExperiment/Scenario1_Green)
+2. Then proceed to [Scenario2](https://github.com/GreenEsfingeExperiment/Scenario_2)
+
 ## ✅ Final Notes
 
 You are invited to participate in a research study that explores a framework designed to dynamically adapt software behavior at runtime, with the goal of promoting more sustainable computing practices.
