@@ -158,8 +158,8 @@ public class UserService {
 ### Explanation Using Green Framework
 Using the Green Framework, you only need to follow 3 steps to configure it, without making any changes to the application's business logic.
 
-- Step 1: Wrap your original class with the framework with `GreenFactory.greenify(UserService.class)`
-- Step 2: Annotate your target with `@GreenReturnWhenSwitchOff` and `@GreenConfigKey`
+- Step 1: Wrap your original class with the framework `GreenFactory.greenify(UserService.class)`
+- Step 2: Annotate your target class with `@GreenReturnWhenSwitchOff` and `@GreenConfigKey`
 - Step 3: Provide a runtime configuration using `GreenConfigurationFacade`
 
 ```java
