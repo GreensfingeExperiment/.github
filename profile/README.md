@@ -1,5 +1,5 @@
 
-# GreenEsfinge Framework Experiment
+# Greensfinge Framework Experiment
 
 📝 FREE AND CLARIFIED CONSENT TERM (FCCT)
 
@@ -9,8 +9,9 @@ You are invited to participate in a research study that proposes a framework des
 
 ### Participation
 
-This experiment is structured in multiple phases. You will be asked to perform specific tasks using the framework available at: [https://github.com/EsfingeFramework/greensfinge](https://github.com/EsfingeFramework/greensfinge). Detailed instructions for each phase are provided in the following section.
-
+- This experiment is organized into several phases. You will be required to complete specific tasks using the framework available at https://github.com/EsfingeFramework/greensfinge. 
+- After completing the task, **`please email us a zip file containing all of your work related to the experiment`** (the contact information can be found in the "Contact Information" section).
+- Detailed instructions for each phase are provided in the following section.
 ---
 
 ### Confidentiality and Anonymity
@@ -21,7 +22,7 @@ All information collected during this research will remain strictly confidential
 
 ### Contact Information
 
-Throughout the study, you are encouraged to ask questions or request clarifications at any time by contacting one of the researchers at the email address: thiagocarvalhobcc@gmail.com.
+Throughout the study, you are encouraged to ask questions or request clarifications at any time by contacting one of the researchers at the email address: **thiagocarvalhobcc@gmail.com**.
 
 ---
 
@@ -89,7 +90,7 @@ In scenarios where energy efficiency is a priority — such as on mobile devices
 
 This experiment introduces a framework that addresses this challenge using a lightweight, annotation-based mechanism in Java. The idea is to allow developers to control optional features at runtime, enabling or disabling them based on external configuration, while preserving the structure and maintainability of the code.
 
-Even though the GreenEsfinge framework is used in this experiment, no prior experience with it is required. However, if you want to check, here is the link: Green Esfinge. The goal is to evaluate whether a simple approach using traditional Java techniques can contribute to more sustainable software by reducing unnecessary computation and, consequently, energy usage.
+Even though the Greensfinge framework is used in this experiment, no prior experience with it is required. However, if you want to check, here is the link: [Greensfinge](https://github.com/EsfingeFramework/greensfinge). The goal is to evaluate whether a simple approach using traditional Java techniques can contribute to more sustainable software by reducing unnecessary computation and, consequently, energy usage.
 
 To help participants understand the concept, the next section presents a complete, practical example demonstrating how to integrate the framework into a Java class and simulate behavior changes dynamically.
 
@@ -97,83 +98,106 @@ To help participants understand the concept, the next section presents a complet
 
 ## D) Example Usage
 
-This section demonstrates how to configure and use the GreenEsfinge framework in a Java project.
+This section demonstrates how to configure and use the Greensfinge framework in a Java project. It is divided into two parts: the **Conventional Approach** and the **GreenFramework Approach**. The first part will illustrate how you would typically modify the code using conditional logic to control features, while the second part shows how the Greensfinge framework simplifies this process by dynamically managing behavior with annotations and configuration.
 
-### Step 1: Wrap your original class with the framework
+### Explanation Using Conventional Approach
 
-To enable dynamic behavior, your target class must be "wrapped" by the framework using the `GreenFactory.greenify()` method.
-
-```java
-Service service = GreenFactory.greenify(Service.class); // Wraps your class with GreenEsfinge capabilities
-```
-
-This call returns a proxy instance of `Service`, enabling the framework to intercept and control method calls based on the configuration.
-
-### Step 2: Annotate your target with `@GreenReturnWhenSwitchOff` and `@GreenConfigKey`
-
-Finally, annotate the component you want to control dynamically. This is what links the class or method to the configuration key used above.
+Imagine that you have the following code, where you would need to modify the logic by adding conditional operators to enable or disable specific features at runtime.
 
 ```java
-public class Service { // The original class
-   @GreenConfigKey("YOUR_KEY_CONFIGURATION")
-   @GreenReturnWhenSwitchOff
-   public void doSomething(StringBuilder strParameter) {
-      strParameter.append("something very high");
-   }    
-} 
-```
-
-### Step 3: Provide a runtime configuration using `GreenConfigurationFacade`
-
-Next, configure the framework to define whether a specific feature should be ignored (skipped or simulated), and what value should be returned instead.
-
-```java
-GreenConfigurationFacade facade = new GreenConfigurationFacade();
-
-facade.setGeneralConfiguration(GreenSwitchConfiguration.builder()
-        .ignore(true) // Enable skip mode
-        .configurationKey("YOUR_KEY_CONFIGURATION") // This key links to the annotation in your class
-        .build()
-);
-```
-
-Below a complete code for an example
-
-```java
-
-import net.sf.esfinge.greenframework.configuration.GreenFactory;
-import net.sf.esfinge.greenframework.configuration.facade.GreenConfigurationFacade;
-import net.sf.esfinge.greenframework.dto.annotation.GreenSwitchConfiguration;
-import net.sf.esfinge.greenframework.annotation.GreenConfigKey;
-import net.sf.esfinge.greenframework.annotation.GreenSwitch;
+public class MainService {
+    
+    private UserService userService = new UserService();
+    
+    public String mainOperation(){
+        StringBuilder sbParam = new StringBuilder();
+        sbParam.append("before processing");
+    
+        userService.doSomethingWithHighConsumeEnergy(sbParam);
+       
+        sbParam.append("after processing");
+        return sbParam.toString();
+    }
+}
 
 public class UserService {
 
-   @GreenConfigKey("methodConfigKey")
-   @GreenReturnWhenSwitchOff
-   public void doSomethingWithHighConsumeEnergy(StringBuilder strParameter) {
-      strParameter.append("something very high");
-   }
+    public void optionalFunctionalityWithHighEnergyConsumption(StringBuilder strParameter) {
+        strParameter.append("something very high");
+    }
+}
+```
+Using the Conventional Approach, you would need to implement logic with conditionals inside the application's business logic, as shown in the code below.
+
+```java
+public class MainService {
+
+    private boolean disableHighConsumeEnergy;
+    private UserService userService = new UserService();
+
+    public String mainOperation(){
+        StringBuilder sbParam = new StringBuilder();
+        sbParam.append("before processing");
+
+        if(disableHighConsumeEnergy) {
+            userService.doSomethingWithHighConsumeEnergy(sbParam);    
+        }
+        
+        sbParam.append("after processing");
+        return sbParam.toString();
+    }
 }
 
-public class Main {
-    
-    public static void main(String[] args) {
-       UserService userService = GreenFactory.greenify(UserService.class);
+public class UserService {
+    public void optionalFunctionalityWithHighEnergyConsumption(StringBuilder strParameter) {
+        strParameter.append("something very high");
+    }
+}
+```
+
+### Explanation Using Green Framework
+Using the Green Framework, you only need to follow 3 steps to configure it, without making any changes to the application's business logic.
+
+- Step 1: Wrap your original class with the framework with `GreenFactory.greenify(UserService.class)`
+- Step 2: Annotate your target with `@GreenReturnWhenSwitchOff` and `@GreenConfigKey`
+- Step 3: Provide a runtime configuration using `GreenConfigurationFacade`
+
+```java
+public class MainService {
+
+   //Step 1 - Use GreenFactory.greenif() to proxy the Object
+   private UserService userService = GreenFactory.greenify(UserService.class);
+
+   public String mainOperation(){
+   	   StringBuilder sbParam = new StringBuilder();
+       sbParam.append("before processing");
+
+       userService.doSomethingWithHighConsumeEnergy(sbParam);
+       
+       sbParam.append("after processing");
+       return sbParam.toString();
+   }
+
+   //Step 3 - Create the configuration to enable ou disable the invocation method
+   public void optimizeEnergyConsumption(boolean config){
        GreenConfigurationFacade facade = new GreenConfigurationFacade();
 
        facade.setGeneralConfiguration(GreenSwitchConfiguration.builder()
-               .ignore(true)
-               .configurationKey("methodConfigKey")
-               .build()
+        .ignore(config) 
+        .configurationKey("OPTIONAL") // This key links to the annotation in your class
+        .build()
        );
-       
-       StringBuilder sbParam = new StringBuilder();
-       sbParam.append("testValue");
-       userService.doSomethingWithHighConsumeEnergy(sbParam);
-       System.out.println(sbParam.toString());
-       //And you'll see the output is only testValue
-    }    
+   }
+}
+
+public class UserService {
+
+   //Step 2 - Use the annotations to tell the framework who and how to dynamically change behavior
+   @GreenConfigKey("OPTIONAL")
+   @GreenReturnWhenSwitchOff
+   public void optionalFunctionalityWithHighEnergyConsumption(StringBuilder strParameter) {
+      strParameter.append("something very high");
+   }
 }
 ```
 
@@ -181,8 +205,6 @@ This configuration tells the framework:
 
  - To ignore (skip) the actual execution.
  - To apply this configuration only to the feature annotated with the corresponding key.
-
-
 
 These annotations serve as markers for the framework to determine:
 - Which parts of the code are optional (via `@GreenReturnWhenSwitchOff`).
@@ -196,8 +218,6 @@ These annotations serve as markers for the framework to determine:
 | 2    | Annotate your original class or method          | Link to runtime config key                |
 | 3    | Create a config with `GreenConfigurationFacade` | Define runtime behavior                   |
 
-
-**Note that the main configuration is the .configurationKey, which will link the facade configuration with the annotation in the class.**
 
 ---
 
@@ -229,13 +249,16 @@ How can we prevent the view counter from being executed without altering the act
 ## E) Experiment
 You are required to complete two coding tasks, each using one of the two proposed approaches.
 
-There are two available task groups. **The research team will assign which group you should complete**, so you will not need to choose it yourself.
+There are four available task groups. **The research team will assign which group you should complete**, so you will not need to choose it yourself.
 
-Once you receive your assigned group, access the corresponding tasks, review the requirements carefully, and record your start and end time for each task.
+> Once you receive your assigned group, access the corresponding tasks, review the requirements carefull and:
+> - **Generate an participant ID you can use the link below [https://www.uuidgenerator.net/](https://www.uuidgenerator.net/)** This will be useful when you fill out the form.
+> - **Record your start and end time for each task.**
+> - **Email us when you complete the task (View Contact Information).**
 
 > ⚠️ **Important:**
 > - If you are performing the experiment using the `Scenario1` and `Scenario2` projects, **you must modify the source code** of the application to implement the required behavior.
-> - If you are working with the `Scenario1_Green` and `Scenario2_Green` projects, **you must NOT change the application source code**. In these cases, you should rely solely on the configuration mechanisms provided by the GreenEsfinge framework to simulate the behavior.
+> - If you are working with the `Scenario1_Green` and `Scenario2_Green` projects, **you must NOT change the application source code**. In these cases, you should rely solely on the configuration mechanisms provided by the Greensfinge framework to simulate the behavior.
 
 
 A detailed explanation of each task is outlined below.
@@ -244,24 +267,23 @@ A detailed explanation of each task is outlined below.
 To access the task descriptions, follow the links below:
 
 ## Group A
-1. Start with [Scenario1](https://github.com/GreenEsfingeExperiment/Scenario_1)
-2. Then proceed to [Scenario2_Green](https://github.com/GreenEsfingeExperiment/Scenario2_Green)
+1. Start with [Scenario1](https://github.com/GreensfingeExperiment/Scenario_1)
+2. Then proceed to [Scenario2_Green](https://github.com/GreensfingeExperiment/Scenario2_Green)
 
 ## Group B
-1. Start with [Scenario2](https://github.com/GreenEsfingeExperiment/Scenario_2)
-2. Then proceed to [Scenario1_Green](https://github.com/GreenEsfingeExperiment/Scenario1_Green)
+1. Start with [Scenario2](https://github.com/GreensfingeExperiment/Scenario_2)
+2. Then proceed to [Scenario1_Green](https://github.com/GreensfingeExperiment/Scenario1_Green)
 
 ## Group C
-1. Start with [Scenario2_Green](https://github.com/GreenEsfingeExperiment/Scenario2_Green)
-2. Then proceed to [Scenario1](https://github.com/GreenEsfingeExperiment/Scenario_1)
+1. Start with [Scenario2_Green](https://github.com/GreensfingeExperiment/Scenario2_Green)
+2. Then proceed to [Scenario1](https://github.com/GreensfingeExperiment/Scenario_1)
 
 ## Group D
-1. Start with [Scenario1_Green](https://github.com/GreenEsfingeExperiment/Scenario1_Green)
-2. Then proceed to [Scenario2](https://github.com/GreenEsfingeExperiment/Scenario_2)
+1. Start with [Scenario1_Green](https://github.com/GreensfingeExperiment/Scenario1_Green)
+2. Then proceed to [Scenario2](https://github.com/GreensfingeExperiment/Scenario_2)
 
 ## ✅ Final Notes
 
-You are invited to participate in a research study that explores a framework designed to dynamically adapt software behavior at runtime, with the goal of promoting more sustainable computing practices.
 
 We appreciate your participation. Once you’ve completed the tasks, please take a moment to fill out the questionnaire available at the following link: [Link Form](https://forms.gle/r4M7BeECis9mBQqYA)
 
@@ -271,6 +293,6 @@ Your feedback is essential to improving the framework and identifying potential 
 
 ---
 
-**GreenEsfinge Framework**  
+**Greensfinge Framework**  
 Research and Development Team  
 [https://github.com/EsfingeFramework/greensfinge](https://github.com/EsfingeFramework/greensfinge)
