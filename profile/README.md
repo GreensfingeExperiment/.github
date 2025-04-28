@@ -293,12 +293,11 @@ To access the task descriptions, follow the links below:
 
 ## ✅ Final Notes
 
+Thank you for participating! After completing the tasks, please fill out the questionnaire at: [Link Form](https://forms.gle/r4M7BeECis9mBQqYA).
 
-We appreciate your participation. Once you’ve completed the tasks, please take a moment to fill out the questionnaire available at the following link: [Link Form](https://forms.gle/r4M7BeECis9mBQqYA)
+This study explores how small code adaptations, like disabling non-essential features, can save energy without affecting core functionality. 
 
-This study aims to understand how small code adaptations — such as disabling non-essential features — can contribute to energy savings without compromising the main functionality of an application. By observing your interaction with different application scenarios, we hope to gather insights into the practicality and effectiveness of this approach.
-
-Your feedback is essential to improving the framework and identifying potential areas of impact in real-world software development. The results may help guide future tools and practices that prioritize energy efficiency as a first-class concern in software engineering.
+Your feedback will help us improve the framework and guide future energy-efficient software practices — `please also send your results to us via email.` (can be found in the "Contact Information" section)
 
 ---
 
