@@ -99,6 +99,7 @@ To help participants understand the concept, the next section presents a complet
 ## D) Example Usage
 
 This section demonstrates how to configure and use the Greensfinge framework in a Java project. It is divided into two parts: the **Conventional Approach** and the **GreenFramework Approach**. The first part will illustrate how you would typically modify the code using conditional logic to control features, while the second part shows how the Greensfinge framework simplifies this process by dynamically managing behavior with annotations and configuration.
+- For educational purposes and within the scope of the experiment, we will employ a design pattern known as [collecting-parameter](https://java-design-patterns.com/patterns/collecting-parameter/) in order to illustrate and clarify the decision-making process regarding whether a method should be executed at runtime. 
 
 ### Explanation Using Conventional Approach
 
@@ -163,6 +164,11 @@ Using the Green Framework, you only need to follow 3 steps to configure it, with
 - Step 3: Provide a runtime configuration using `GreenConfigurationFacade`
 
 ```java
+
+import net.sf.esfinge.greenframework.configuration.GreenFactory;
+import net.sf.esfinge.greenframework.configuration.facade.GreenConfigurationFacade;
+import net.sf.esfinge.greenframework.dto.annotation.GreenSwitchConfiguration;
+
 public class MainService {
 
    //Step 1 - Use GreenFactory.greenif() to proxy the Object
@@ -189,6 +195,9 @@ public class MainService {
        );
    }
 }
+
+import net.sf.esfinge.greenframework.annotation.GreenConfigKey;
+import net.sf.esfinge.greenframework.annotation.GreenReturnWhenSwitchOff;
 
 public class UserService {
 
