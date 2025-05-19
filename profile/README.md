@@ -225,7 +225,7 @@ Consider a blog that shows the number of views for each article right below the 
 Although this is a real data point, it is not always required. For instance, when focusing only on layout design or browsing offline:
 
 ### ❓ Task
-How can we prevent the view counter from being executed without altering the actual counting logic?
+How can we prevent the view counter from being executed without altering the actual counting logic ? In this case, the quantity of views is optional
 
 ---
 
