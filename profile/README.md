@@ -212,7 +212,8 @@ Also check out HyperX Cloud Stinger Headphones!"
 These insights are useful but not always essential — especially when the goal is simply to demonstrate the interface, for example.
 
 ### ❓ Task
-How can we ignore the execution to find the other product without actually invoking business logic method?
+
+The search for the product and the number of visits is always mandatory, but the search for the "other product" is optional — so how can we ignore the execution to find the other product without actually invoking the business logic method?
 
 ---
 
