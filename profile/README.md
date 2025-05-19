@@ -86,9 +86,9 @@ No external access, firewall configurations, or other network requirements are n
 
 Modern software applications often include features that, while valuable, are not always essential for every use case. Examples include real-time statistics, recommendation systems, or visual enhancements — all of which may increase energy consumption during execution.
 
-In scenarios where energy efficiency is a priority — such as on mobile devices, in offline modes, during UI prototyping, or even in production environments where executing certain code paths is unnecessary — it may be beneficial to disable or simulate the execution of these features without altering the application’s core logic.
+In scenarios where energy efficiency is a priority — such as on mobile devices, in offline modes, during UI prototyping, or even in production environments where executing certain code paths is unnecessary — it may be beneficial to disable these features without altering the application’s core logic.
 
-This experiment introduces a framework that addresses this challenge using a lightweight, annotation-based mechanism in Java. The idea is to allow developers to control optional features at runtime, enabling or disabling them based on external configuration, while preserving the structure and maintainability of the code.
+**`This experiment introduces a framework that addresses this challenge using a lightweight, annotation-based mechanism in Java. The goal is to allow developers to control optional features at runtime—enabling or disabling them based on external configuration—while preserving code structure and maintainability. This simple approach, which relies on traditional Java techniques, can contribute to more sustainable software by reducing unnecessary computation and, consequently, energy usage.`**
 
 Even though the Greensfinge framework is used in this experiment, no prior experience with it is required. However, if you want to check, here is the link: [Greensfinge](https://github.com/EsfingeFramework/greensfinge). The goal is to evaluate whether a simple approach using traditional Java techniques can contribute to more sustainable software by reducing unnecessary computation and, consequently, energy usage.
 
@@ -96,72 +96,45 @@ To help participants understand the concept, the next section presents a complet
 
 ---
 
-## D) Example Usage
+## D) Experiment General View
+You are required to complete two coding tasks, one using normal code practice (called the conventional approach) and the other using the Greensfinge Framework.
 
-This section demonstrates how to configure and use the Greensfinge framework in a Java project. It is divided into two parts: the **Conventional Approach** and the **GreenFramework Approach**. The first part will illustrate how you would typically modify the code using conditional logic to control features, while the second part shows how the Greensfinge framework simplifies this process by dynamically managing behavior with annotations and configuration.
-- For educational purposes and within the scope of the experiment, we will employ a design pattern known as [collecting-parameter](https://java-design-patterns.com/patterns/collecting-parameter/) in order to illustrate and clarify the decision-making process regarding whether a method should be executed at runtime. 
+There are four available task groups. **The research team will assign your group**, so you will not choose it yourself. If you do not know your group, ask the person responsible for the experiment.
 
-### Explanation Using Conventional Approach
+Once you receive your assigned group, check in the corresponding group what tasks and in which order you need to perform. The order in which you perform the task is important, so please do not change it.
 
-Imagine that you have the following code, where you would need to modify the logic by adding conditional operators to enable or disable specific features at runtime.
+Before starting the experiment, generate a participant ID using the following link: https://www.uuidgenerator.net/ - You will need to provide this ID when you fill out the form and when you send your code.
 
-```java
-public class MainService {
-    
-    private UserService userService = new UserService();
-    
-    public String mainOperation(){
-        StringBuilder sbParam = new StringBuilder();
-        sbParam.append("before processing");
-    
-        userService.doSomethingWithHighConsumeEnergy(sbParam);
-       
-        sbParam.append("after processing");
-        return sbParam.toString();
-    }
-}
+For each task, you need to follow the following steps:
+> 1. Read all the instructions until the end.
+> 2. Download the initial code of the scenario.
+> 3. Open it in your favorite IDE and build.
+> 4. Run the unit tests and make sure that their result are the same as shown on the description of the scenario (some tests should pass and other don't).
+> 5. When you're ready to start, start the timer.
+> 6. Implement the task (a detailed explanation of each task is outlined below):
+>    1. If you are performing the experiment using the Scenario1 and Scenario2 projects, you should modify the source code of the application to implement the required behavior using the coding practices that you know.
+>    2. If you are working with the Scenario1_Green and Scenario2_Green projects, you should rely solely on using the Greensfinge framework to implement the behavior.
+> 7. The task is implemented when all the tests pass. When that happens, stop the timer and take note of the time used to execute the task. This time will be asked when you answer the form.
+> 
+>**`IMPORTANT: If you need to interrupt the task execution for some reason, pause the timer and start it again when you resume the task. This information will be asked when you fill the form.`**
+> 
+> When both tasks are finished:
+> 
+> a. Fill the form by entering the generated participant ID
+> b. Send an email to thiagocarvalhobcc@gmail.com with your group and participant ID in the subject
 
-public class UserService {
+---
 
-    public void optionalFunctionalityWithHighEnergyConsumption(StringBuilder strParameter) {
-        strParameter.append("something very high");
-    }
-}
-```
-Using the Conventional Approach, you would need to implement logic with conditionals inside the application's business logic, as shown in the code below.
+## E) Example Usage
 
-```java
-public class MainService {
-
-    private boolean disableHighConsumeEnergy;
-    private UserService userService = new UserService();
-
-    public String mainOperation(){
-        StringBuilder sbParam = new StringBuilder();
-        sbParam.append("before processing");
-
-        if(disableHighConsumeEnergy) {
-            userService.doSomethingWithHighConsumeEnergy(sbParam);    
-        }
-        
-        sbParam.append("after processing");
-        return sbParam.toString();
-    }
-}
-
-public class UserService {
-    public void optionalFunctionalityWithHighEnergyConsumption(StringBuilder strParameter) {
-        strParameter.append("something very high");
-    }
-}
-```
+This section demonstrates how to configure and use the Greensfinge framework in a Java project. It shows how the Greensfinge framework can be used to activate and deactivate features using annotations and configuration.
 
 ### Explanation Using Green Framework
 Using the Green Framework, you only need to follow 3 steps to configure it, without making any changes to the application's business logic.
 
-- Step 1: Wrap your original class with the framework `GreenFactory.greenify(UserService.class)`
-- Step 2: Annotate your target class with `@GreenReturnWhenSwitchOff` and `@GreenConfigKey`
-- Step 3: Provide a runtime configuration using `GreenConfigurationFacade`
+- Step 1: Create an object of your class encapsulated by the framework with the framework method `GreenFactory.greenify(UserService.class)` passing your class as a parameter. This step wraps the object in a way that the framework can interfere in its calls, making possible to deactivate and activate method calls to the original object.
+- Step 2: Annotate methods in your target class with `@GreenReturnWhenSwitchOff`, to configure that this method has a functionality that can be deactivated, and with `@GreenConfigKey`, to configure a string key that will be associated with that method.
+- Step 3: Provide a runtime configuration using `GreenConfigurationFacade`. This step is used to set a configuration associated with a string key that will activate or deactivate all methods associated with it. 
 
 ```java
 
@@ -212,8 +185,8 @@ public class UserService {
 
 This configuration tells the framework:
 
- - To ignore (skip) the actual execution.
- - To apply this configuration only to the feature annotated with the corresponding key.
+- To ignore (skip) or not the execution of the annotated methods.
+- To apply the configuration only in the methods associated with the corresponding key.
 
 These annotations serve as markers for the framework to determine:
 - Which parts of the code are optional (via `@GreenReturnWhenSwitchOff`).
@@ -239,7 +212,7 @@ Also check out HyperX Cloud Stinger Headphones!"
 These insights are useful but not always essential — especially when the goal is simply to demonstrate the interface, for example.
 
 ### ❓ Task
-How can we ignore the execution without actually invoking business logic method?
+How can we ignore the execution to find the other product without actually invoking business logic method?
 
 ---
 
@@ -254,23 +227,6 @@ Although this is a real data point, it is not always required. For instance, whe
 How can we prevent the view counter from being executed without altering the actual counting logic?
 
 ---
-
-## E) Experiment
-You are required to complete two coding tasks, each using one of the two proposed approaches.
-
-There are four available task groups. **The research team will assign which group you should complete**, so you will not need to choose it yourself.
-
-> Once you receive your assigned group, access the corresponding tasks, review the requirements carefull and:
-> - **Generate an participant ID you can use the link below [https://www.uuidgenerator.net/](https://www.uuidgenerator.net/)** This will be useful when you fill out the form.
-> - **Record your start and end time for each task.**
-> - **Email us when you complete the task (View Contact Information).**
-
-> ⚠️ **Important:**
-> - If you are performing the experiment using the `Scenario1` and `Scenario2` projects, **you must modify the source code** of the application to implement the required behavior.
-> - If you are working with the `Scenario1_Green` and `Scenario2_Green` projects, **you must NOT change the application source code**. In these cases, you should rely solely on the configuration mechanisms provided by the Greensfinge framework to simulate the behavior.
-
-
-A detailed explanation of each task is outlined below.
 
 ### Start ⏳
 To access the task descriptions, follow the links below:
