@@ -120,8 +120,8 @@ For each task, you need to follow the following steps:
 > 
 > When both tasks are finished:
 > 
-> a. Fill the form by entering the generated participant ID
-> b. Send an email to thiagocarvalhobcc@gmail.com with your group and participant ID in the subject
+> 1. Fill the form by entering the generated participant ID
+> 2. Send an email to thiagocarvalhobcc@gmail.com with your group and participant ID in the subject and do not forget to attach the source code you made.
 
 ---
 
@@ -133,7 +133,7 @@ This section demonstrates how to configure and use the Greensfinge framework in 
 Using the Green Framework, you only need to follow 3 steps to configure it, without making any changes to the application's business logic.
 
 - Step 1: Create an object of your class encapsulated by the framework with the framework method `GreenFactory.greenify(UserService.class)` passing your class as a parameter. This step wraps the object in a way that the framework can interfere in its calls, making possible to deactivate and activate method calls to the original object.
-- Step 2: Annotate methods in your target class with `@GreenReturnWhenSwitchOff`, to configure that this method has a functionality that can be deactivated, and with `@GreenConfigKey`, to configure a string key that will be associated with that method.
+- Step 2: Annotate methods in your target class with `@GreenSwitchOff`, to configure that this method has a functionality that can be deactivated, and with `@GreenConfigKey`, to configure a string key that will be associated with that method.
 - Step 3: Provide a runtime configuration using `GreenConfigurationFacade`. This step is used to set a configuration associated with a string key that will activate or deactivate all methods associated with it. 
 
 ```java
@@ -170,13 +170,13 @@ public class MainService {
 }
 
 import net.sf.esfinge.greenframework.annotation.GreenConfigKey;
-import net.sf.esfinge.greenframework.annotation.GreenReturnWhenSwitchOff;
+import net.sf.esfinge.greenframework.annotation.GreenSwitchOff;
 
 public class UserService {
 
    //Step 2 - Use the annotations to tell the framework who and how to dynamically change behavior
    @GreenConfigKey("OPTIONAL")
-   @GreenReturnWhenSwitchOff
+   @GreenSwitchOff
    public void optionalFunctionalityWithHighEnergyConsumption(StringBuilder strParameter) {
       strParameter.append("something very high");
    }
@@ -189,7 +189,7 @@ This configuration tells the framework:
 - To apply the configuration only in the methods associated with the corresponding key.
 
 These annotations serve as markers for the framework to determine:
-- Which parts of the code are optional (via `@GreenReturnWhenSwitchOff`).
+- Which parts of the code are optional (via `@GreenSwitchOff`).
 - How to match them with the runtime configuration (via `@GreenConfigKey`).
 
 ### 📝 Summary of Key Points
@@ -220,7 +220,7 @@ The search for the product and the number of visits is always mandatory, but the
 ## Scenario 2 – Article View Counter
 Consider a blog that shows the number of views for each article right below the title. By default, this number is updated with each new access:
 
-"This article has been viewed 542 times."
+"The article Java for Beginners contains 15 pages and has been viewed 542 times."
 
 Although this is a real data point, it is not always required. For instance, when focusing only on layout design or browsing offline:
 
@@ -254,7 +254,10 @@ Thank you for participating! After completing the tasks, please fill out the que
 
 This study explores how small code adaptations, like disabling non-essential features, can save energy without affecting core functionality. 
 
-Your feedback will help us improve the framework and guide future energy-efficient software practices — `please also send your results to us via email.` (can be found in the "Contact Information" section)
+Your feedback will help us improve the framework and guide future energy-efficient software practices
+
+Send an email to thiagocarvalhobcc@gmail.com with your group and participant ID in the subject and do not forget to attach the source code you made.
+
 
 ---
 
